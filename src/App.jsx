@@ -32,12 +32,14 @@ class App extends Component {
 
     handleNumberLogic(state, number){
         console.log(state.currentValue);
-        const decimalTest = /\d+\.$/;
+
+        //const decimalTest = /\d+\.$/;
+        
         const newValue = parseFloat(state.currentValue + number);
         return {...state, currentValue: newValue};
     }
     handleNumber(number){
-        this.setState(handleNumberLogic(this.state, number));
+        this.setState(this.handleNumberLogic(this.state, number));
     }
 
     render() {
