@@ -6,7 +6,7 @@ class Screen extends Component {
     render() {
         return (
             <div id="screen">
-                <div className="screen__main">456</div>
+                <div className="screen__main">{this.props.screenValue}</div>
                 <div className="screen__history">7+4+16</div>
             </div>
         );
@@ -15,37 +15,55 @@ class Screen extends Component {
 
 function Button(props) {
     return (
-        <button value={props.value} onClick={() => props.handleButtonClick(props.value)}>
+        <button className={props.className?props.className:""} value={props.value} onClick={() => props.handleButtonClick(props.value)}>
             {props.value}
         </button>
     );
 }
 
 class App extends Component {
+    constructor(){
+        super();
+        this.state = {
+            currentValue: 0,
+            history: []
+        }
+    }
+
+    handleNumberLogic(state, number){
+        console.log(state.currentValue);
+        const decimalTest = /\d+\.$/;
+        const newValue = parseFloat(state.currentValue + number);
+        return {...state, currentValue: newValue};
+    }
+    handleNumber(number){
+        this.setState(handleNumberLogic(this.state, number));
+    }
+
     render() {
         return ( 
             <div className="App">
                 <div id="container">
-                    <Screen />
+                    <Screen screenValue={this.state.currentValue} history={this.state.history} />
                     <div id="buttons">
                         <Button value="AC" handleButtonClick={(b)=>alert(b)} />
                         <button value="+/-">+/-</button>
                         <button value="%">%</button>
                         <button value="/">/</button>
-                        <button value="7">7</button>
-                        <button value="8">8</button>
-                        <button value="9">9</button>
+                        <Button value="7" handleButtonClick={(b)=>this.handleNumber(b)} />
+                        <Button value="8" handleButtonClick={(b)=>this.handleNumber(b)} />
+                        <Button value="9" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <button value="*">*</button>
-                        <button value="4">4</button>
-                        <button value="5">5</button>
-                        <button value="6">6</button>
+                        <Button value="4" handleButtonClick={(b)=>this.handleNumber(b)} />
+                        <Button value="5" handleButtonClick={(b)=>this.handleNumber(b)} />
+                        <Button value="6" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <button value="-">-</button>
-                        <button value="1">1</button>
-                        <button value="2">2</button>
-                        <button value="3">3</button>
+                        <Button value="1" handleButtonClick={(b)=>this.handleNumber(b)} />
+                        <Button value="2" handleButtonClick={(b)=>this.handleNumber(b)} />
+                        <Button value="3" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <button value="+">+</button>
-                        <button className="doublewide" value="0">0</button>
-                        <button value=".">.</button>
+                        <Button className="doublewide" value="0" handleButtonClick={(b)=>this.handleNumber(b)} />
+                        <Button value="." handleButtonClick={(b)=>this.handleNumber(b)} />
                         <button value="=">=</button>
                     </div>
                 </div>
