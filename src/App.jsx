@@ -1,15 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
+
+class Screen extends Component {
+    render() {
+        return (
+            <div id="screen">
+                <div className="screen__main">456</div>
+                <div className="screen__history">7+4+16</div>
+            </div>
+        );
+    }
+}
+
+function Button(props) {
+    return (
+        <button value={props.value} onClick={() => props.handleButtonClick(props.value)}>
+            {props.value}
+        </button>
+    );
+}
 
 class App extends Component {
     render() {
         return ( 
-            <div className = "App">
+            <div className="App">
                 <div id="container">
-                    <div id="screen"></div>
+                    <Screen />
                     <div id="buttons">
-                        <button value="AC">AC</button>
+                        <Button value="AC" handleButtonClick={(b)=>alert(b)} />
                         <button value="+/-">+/-</button>
                         <button value="%">%</button>
                         <button value="/">/</button>

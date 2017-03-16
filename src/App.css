@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "7Seg";
+    src: url(http://res.cloudinary.com/jrutley/raw/upload/v1489677207/DSEG7ClassicMini-Regular.woff);
+}
+
 .App {
     text-align: center;
 }
@@ -11,6 +16,15 @@
     height: 100px;
     background-color: #ccc;
     border-radius: 5px;
+    font-family: "7Seg", Courier, monospace;
+}
+
+.screen__main {
+    font-size: 2em;
+}
+
+.screen__history {
+    font-size: 0.8em;
 }
 
 .App-logo {
