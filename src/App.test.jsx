@@ -1,36 +1,76 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import App from './App';
+import { mount } from 'enzyme';
 
-it('renders without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render( <App/> , div);
+describe('operator entry', () => {
+    it.skip('first addition no second number', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+');
+        expect(app.state.currentValue).toEqual("5");
+        expect(app.state.currentOperator).toEqual("+");
+    })
+    it.skip('takes the latest operator', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+');
+        app.handleOperator('-');
+        expect(app.state.currentValue).toEqual("5");
+        expect(app.state.currentOperator).toEqual("-");
+    })
+    it.skip('number plus number', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+');
+        app.handleNumber('5');
+        expect(app.state.currentValue).toEqual("5");
+    })
+    it.skip('number plus number equals', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+');
+        app.handleNumber('5');
+        app.handleOperator('=');
+        expect(app.state.currentValue).toEqual("10");
+    })
+    it.skip('equals repeats last operation', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+');
+        app.handleNumber('5');
+        app.handleOperator('=');
+        app.handleOperator('=');
+        expect(app.state.currentValue).toEqual("15");
+        expect(app.state.currentOperator).toEqual("+"); // needed for repeating =
+    })    
 });
 
 describe('number entry', () => {
-    const div = document.createElement('div');
-    var app = new App();
     it('handles entering positive numbers', () => {
-        let state = app.handleNumberLogic(app.state, '5');
-        state = app.handleNumberLogic(state, '5');
-        expect(state.currentValue).toEqual(55);
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleNumber('5');
+        expect(app.state.currentValue).toEqual("55");
     })
-    it.skip('ignores decimal at end', () => {
-        let state = app.handleNumberLogic(app.state, '5');
-        state = app.handleNumberLogic(state, '.');
-        expect(state.currentValue).toEqual(5);
+    it('ignores decimal at end', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleNumber('.');
+        expect(app.state.currentValue).toEqual("5.");
     })
-    it.skip('ignores any second decimal point', () => {
-        let state = app.handleNumberLogic(app.state, '5');
-        state = app.handleNumberLogic(state, '.');
-        state = app.handleNumberLogic(app.state, '1');
-        state = app.handleNumberLogic(state, '.');
-        state = app.handleNumberLogic(state, '2');
-        expect(state.currentValue).toEqual(5.12);
+    it('ignores any second decimal point', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleNumber('.');
+        app.handleNumber('1');
+        app.handleNumber('.');
+        app.handleNumber('2');
+        expect(app.state.currentValue).toEqual("5.12");
     })
-    it.skip('adds a zero at the front if decimal is first', () => {
-        let state = app.handleNumberLogic(state, '.');
-        state = app.handleNumberLogic(app.state, '1');
-        expect(state.currentValue).toEqual(0.1);
+    it('adds a zero at the front if decimal is first', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('.');
+        app.handleNumber('1');
+        expect(app.state.currentValue).toEqual("0.1");
     })
 });

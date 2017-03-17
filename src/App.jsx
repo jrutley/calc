@@ -30,16 +30,13 @@ class App extends Component {
         }
     }
 
-    handleNumberLogic(state, number){
-        console.log(state.currentValue);
-
-        //const decimalTest = /\d+\.$/;
-        
-        const newValue = parseFloat(state.currentValue + number);
-        return {...state, currentValue: newValue};
-    }
     handleNumber(number){
-        this.setState(this.handleNumberLogic(this.state, number));
+        const decimalTest = /\d+\.\d+$/;
+        
+        const newValue = parseFloat(this.state.currentValue + number).toString();
+        const newState = {...this.state, currentValue: newValue.concat(number === '.' && !newValue.match(decimalTest) ? number : "")};
+
+        this.setState(newState);
     }
 
     render() {
