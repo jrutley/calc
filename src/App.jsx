@@ -26,13 +26,23 @@ class App extends Component {
         super();
         this.state = {
             currentValue: 0,
-            history: []
+            history: ['0']
         }
+    }
+
+    isDigitOrEquals(candidate){
+        return this.isDigit(candidate) || candidate === '=';
+    }
+    isDigit(candidate){
+        return candidate.match(/[\d.]/);
     }
 
     handleEquals(){
         const state = {...this.state};
         const lastHistoryElement = state.history.length - 1;
+        if(!this.isDigitOrEquals(state.history[lastHistoryElement]) && lastHistoryElement >= 1){
+            state.history.push(state.history[lastHistoryElement - 1]);
+        }
         if(lastHistoryElement >= 2 && state.history[lastHistoryElement] === '='){
             state.history = state.history.concat(state.history.slice(-3, -1));
         }
@@ -42,26 +52,29 @@ class App extends Component {
     }
 
     handleNumber(number){
-        const newState = {...this.state};
+        const state = {...this.state};
         const decimalTest = /\d+\.\d+$/;
 
-        const lastHistoryElement = newState.history.length - 1;
-        if(lastHistoryElement === -1 || !newState.history[lastHistoryElement].match(/[\d.]/)){
-            newState.currentValue = 0;
+        const lastHistoryElement = state.history.length - 1;
+        if(lastHistoryElement === -1 || !this.isDigit(state.history[lastHistoryElement])){
+            state.currentValue = 0;
         }
 
-        const newValue = parseFloat(newState.currentValue + number).toString();
+        const newValue = parseFloat(state.currentValue + number).toString();
 
-        if(lastHistoryElement === -1 || !newState.history[lastHistoryElement].match(/[\d.]/)){
-            newState.history.push(number)
-        } else if(newState.currentValue === newState.history[lastHistoryElement]){
-            newState.history[lastHistoryElement] = newValue;
+        console.log(`Number ${number} newValue ${newValue}`);
+        console.log(`lastHistoryElement ${lastHistoryElement} state.history[lastHistoryElement] ${state.history[lastHistoryElement]}`);
+
+        if(lastHistoryElement === -1 || !this.isDigit(state.history[lastHistoryElement])){
+            state.history.push(number)
+        } else if(state.currentValue === state.history[lastHistoryElement] || '0' === state.history[lastHistoryElement]){
+            state.history[lastHistoryElement] = newValue;
         }
 
-        newState.currentValue = newValue.concat(number === '.' && !newValue.match(decimalTest) ? number : "");
+        state.currentValue = newValue.concat(number === '.' && !newValue.match(decimalTest) ? number : "");
         
 
-        this.setState(newState);
+        this.setState(state);
     }
 
     handleOperator(operator){
