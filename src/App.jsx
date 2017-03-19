@@ -31,12 +31,35 @@ class App extends Component {
     }
 
     handleNumber(number){
+        let newState = {...this.state};
         const decimalTest = /\d+\.\d+$/;
+
+        const lastHistoryElement = newState.history.length - 1;
+        if(lastHistoryElement === -1 || !newState.history[lastHistoryElement].match(/[\d\.]/)){
+            newState.currentValue = 0;
+        }
+
+        const newValue = parseFloat(newState.currentValue + number).toString();
+
+        if(lastHistoryElement === -1 || !newState.history[lastHistoryElement].match(/[\d\.]/)){
+            newState.history.push(number)
+        } else if(newState.currentValue === newState.history[lastHistoryElement]){
+            newState.history[lastHistoryElement] = newValue;
+        }
+
+        newState.currentValue = newValue.concat(number === '.' && !newValue.match(decimalTest) ? number : "");
         
-        const newValue = parseFloat(this.state.currentValue + number).toString();
-        const newState = {...this.state, currentValue: newValue.concat(number === '.' && !newValue.match(decimalTest) ? number : "")};
 
         this.setState(newState);
+    }
+
+    handleOperator(operator){
+        const state = {...this.state};
+
+        state.history.push(operator);
+        state.currentOperator = operator;
+
+        this.setState(state);
     }
 
     render() {
@@ -48,19 +71,19 @@ class App extends Component {
                         <Button value="AC" handleButtonClick={(b)=>alert(b)} />
                         <button value="+/-">+/-</button>
                         <button value="%">%</button>
-                        <button value="/">/</button>
+                        <Button value="/" handleButtonClick={(op)=>this.handleOperator(op)} />
                         <Button value="7" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="8" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="9" handleButtonClick={(b)=>this.handleNumber(b)} />
-                        <button value="*">*</button>
+                        <Button value="*" handleButtonClick={(op)=>this.handleOperator(op)} />
                         <Button value="4" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="5" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="6" handleButtonClick={(b)=>this.handleNumber(b)} />
-                        <button value="-">-</button>
+                        <Button value="-" handleButtonClick={(op)=>this.handleOperator(op)} />
                         <Button value="1" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="2" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="3" handleButtonClick={(b)=>this.handleNumber(b)} />
-                        <button value="+">+</button>
+                        <Button value="+" handleButtonClick={(op)=>this.handleOperator(op)} />
                         <Button className="doublewide" value="0" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="." handleButtonClick={(b)=>this.handleNumber(b)} />
                         <button value="=">=</button>

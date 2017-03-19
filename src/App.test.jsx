@@ -3,14 +3,15 @@ import App from './App';
 import { mount } from 'enzyme';
 
 describe('operator entry', () => {
-    it.skip('first addition no second number', () => {
+    it('first addition no second number', () => {
         const app = mount(<App />).instance();
         app.handleNumber('5');
         app.handleOperator('+');
         expect(app.state.currentValue).toEqual("5");
+        expect(app.state.history).toEqual(["5", "+"]);
         expect(app.state.currentOperator).toEqual("+");
     })
-    it.skip('takes the latest operator', () => {
+    it('takes the latest operator', () => {
         const app = mount(<App />).instance();
         app.handleNumber('5');
         app.handleOperator('+');
@@ -18,20 +19,28 @@ describe('operator entry', () => {
         expect(app.state.currentValue).toEqual("5");
         expect(app.state.currentOperator).toEqual("-");
     })
-    it.skip('number plus number', () => {
+    it('number times number', () => {
         const app = mount(<App />).instance();
         app.handleNumber('5');
-        app.handleOperator('+');
-        app.handleNumber('5');
-        expect(app.state.currentValue).toEqual("5");
+        app.handleOperator('*');
+        app.handleNumber('6');
+        expect(app.state.currentValue).toEqual("6");
     })
     it.skip('number plus number equals', () => {
         const app = mount(<App />).instance();
         app.handleNumber('5');
-        app.handleOperator('+');
+        app.handleOperator('*');
         app.handleNumber('5');
         app.handleOperator('=');
-        expect(app.state.currentValue).toEqual("10");
+        expect(app.state.currentValue).toEqual("25");
+    })
+    it.skip('number divide number equals', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('/');
+        app.handleNumber('5');
+        app.handleOperator('=');
+        expect(app.state.currentValue).toEqual("1");
     })
     it.skip('equals repeats last operation', () => {
         const app = mount(<App />).instance();
