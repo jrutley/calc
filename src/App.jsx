@@ -30,8 +30,14 @@ class App extends Component {
         }
     }
 
+    handleEquals(){
+        const state = {...this.state};
+        state.currentValue = eval(this.state.history.reduce((acc, cur) => cur.concat(acc),'')).toString();
+        this.setState(state);        
+    }
+
     handleNumber(number){
-        let newState = {...this.state};
+        const newState = {...this.state};
         const decimalTest = /\d+\.\d+$/;
 
         const lastHistoryElement = newState.history.length - 1;
@@ -86,7 +92,7 @@ class App extends Component {
                         <Button value="+" handleButtonClick={(op)=>this.handleOperator(op)} />
                         <Button className="doublewide" value="0" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="." handleButtonClick={(b)=>this.handleNumber(b)} />
-                        <button value="=">=</button>
+                        <Button value="=" handleButtonClick={(e)=>this.handleEquals()} />
                     </div>
                 </div>
             </div>

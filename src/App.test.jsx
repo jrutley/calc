@@ -24,22 +24,23 @@ describe('operator entry', () => {
         app.handleNumber('5');
         app.handleOperator('*');
         app.handleNumber('6');
+        expect(app.state.history).toEqual(["5", "*", "6"]);
         expect(app.state.currentValue).toEqual("6");
     })
-    it.skip('number plus number equals', () => {
+    it('number plus number equals', () => {
         const app = mount(<App />).instance();
         app.handleNumber('5');
         app.handleOperator('*');
         app.handleNumber('5');
-        app.handleOperator('=');
+        app.handleEquals();
         expect(app.state.currentValue).toEqual("25");
     })
-    it.skip('number divide number equals', () => {
+    it('number divide number equals', () => {
         const app = mount(<App />).instance();
         app.handleNumber('5');
         app.handleOperator('/');
         app.handleNumber('5');
-        app.handleOperator('=');
+        app.handleEquals();
         expect(app.state.currentValue).toEqual("1");
     })
     it.skip('equals repeats last operation', () => {
@@ -47,8 +48,8 @@ describe('operator entry', () => {
         app.handleNumber('5');
         app.handleOperator('+');
         app.handleNumber('5');
-        app.handleOperator('=');
-        app.handleOperator('=');
+        app.handleEquals();
+        app.handleEquals();
         expect(app.state.currentValue).toEqual("15");
         expect(app.state.currentOperator).toEqual("+"); // needed for repeating =
     })    
