@@ -60,8 +60,17 @@ describe('operator entry', () => {
         app.handleEquals();
         expect(app.state.currentValue).toEqual("10");
         expect(app.state.currentOperator).toEqual("+");
-    }) 
+    })
 });
+
+describe('clear button', () => {
+    it.skip('clears on click', ()=>{
+        // TODO
+    })
+    it('c to clear the current number', ()=>{
+        // TODO
+    })
+})
 
 describe('number entry', () => {
     it('handles entering positive numbers', () => {
@@ -90,5 +99,14 @@ describe('number entry', () => {
         app.handleNumber('.');
         app.handleNumber('1');
         expect(app.state.currentValue).toEqual("0.1");
+    })
+    it.skip('adds a zero at the front if decimal is first and shows in history', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('.');
+        app.handleNumber('1');
+        expect(app.state.history[0]).toEqual("0.1");
+    })
+    it.skip('clear number on screen and history after an equals', ()=>{
+        // TODO
     })
 });

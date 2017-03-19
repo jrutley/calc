@@ -7,7 +7,7 @@ class Screen extends Component {
         return (
             <div id="screen">
                 <div className="screen__main">{this.props.screenValue}</div>
-                <div className="screen__history">7+4+16</div>
+                <div className="screen__history">{this.props.history.filter(x=>x!=='=')}</div>
             </div>
         );
     }
