@@ -43,7 +43,7 @@ describe('operator entry', () => {
         app.handleEquals();
         expect(app.state.currentValue).toEqual("1");
     })
-    it.skip('equals repeats last operation', () => {
+    it('equals repeats last operation', () => {
         const app = mount(<App />).instance();
         app.handleNumber('5');
         app.handleOperator('+');
@@ -53,6 +53,14 @@ describe('operator entry', () => {
         expect(app.state.currentValue).toEqual("15");
         expect(app.state.currentOperator).toEqual("+"); // needed for repeating =
     })    
+    it.skip('equals repeats last operation on single number', () => {
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+');
+        app.handleEquals();
+        expect(app.state.currentValue).toEqual("10");
+        expect(app.state.currentOperator).toEqual("+");
+    }) 
 });
 
 describe('number entry', () => {

@@ -32,7 +32,12 @@ class App extends Component {
 
     handleEquals(){
         const state = {...this.state};
-        state.currentValue = eval(this.state.history.reduce((acc, cur) => cur.concat(acc),'')).toString();
+        const lastHistoryElement = state.history.length - 1;
+        if(lastHistoryElement >= 2 && state.history[lastHistoryElement] === '='){
+            state.history = state.history.concat(state.history.slice(-3, -1));
+        }
+        state.history.push('=');
+        state.currentValue = eval(state.history.filter(h=>h !== '=').reduce((acc, cur) => cur.concat(acc),'')).toString();
         this.setState(state);        
     }
 
@@ -41,13 +46,13 @@ class App extends Component {
         const decimalTest = /\d+\.\d+$/;
 
         const lastHistoryElement = newState.history.length - 1;
-        if(lastHistoryElement === -1 || !newState.history[lastHistoryElement].match(/[\d\.]/)){
+        if(lastHistoryElement === -1 || !newState.history[lastHistoryElement].match(/[\d.]/)){
             newState.currentValue = 0;
         }
 
         const newValue = parseFloat(newState.currentValue + number).toString();
 
-        if(lastHistoryElement === -1 || !newState.history[lastHistoryElement].match(/[\d\.]/)){
+        if(lastHistoryElement === -1 || !newState.history[lastHistoryElement].match(/[\d.]/)){
             newState.history.push(number)
         } else if(newState.currentValue === newState.history[lastHistoryElement]){
             newState.history[lastHistoryElement] = newValue;
