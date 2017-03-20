@@ -112,7 +112,7 @@ describe('number entry', () => {
         app.handleNumber('1');
         expect(app.state.history[0]).toEqual("0.1");
     })
-    it.skip('after an equals followed by a number, clear the history', ()=>{
+    it('after an equals followed by a number, clear the history', ()=>{
         const app = mount(<App />).instance();
         app.handleNumber('5');
         app.handleNumber('+');

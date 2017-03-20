@@ -62,14 +62,19 @@ class App extends Component {
         const state = {...this.state};
         const decimalTest = /\d+\.\d+$/;
 
-        const lastHistoryElement = state.history.length - 1;
-        if(lastHistoryElement === -1 || !this.isDigit(state.history[lastHistoryElement])){
+        let lastHistoryElement = state.history.length - 1;
+        if(!this.isDigit(state.history[lastHistoryElement])){
             state.currentValue = 0;
+        }
+        if(state.history[lastHistoryElement] === '='){
+            state.currentValue = 0;
+            state.history = ['0'];
+            lastHistoryElement = 0;
         }
 
         const newValue = parseFloat(state.currentValue + number).toString();
 
-        if(lastHistoryElement === -1 || !this.isDigit(state.history[lastHistoryElement])){
+        if(!this.isDigit(state.history[lastHistoryElement])){
             state.history.push(number)
         } else if(state.currentValue === state.history[lastHistoryElement] || '0' === state.history[lastHistoryElement]){
             state.history[lastHistoryElement] = newValue;
