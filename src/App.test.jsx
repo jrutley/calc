@@ -103,6 +103,9 @@ describe('clear button', () => {
         expect(app.state.currentValue).toEqual("0");
         expect(app.state.history).toEqual(['0']);
     })
+    it.skip('changes display to AC when ready to clear all', ()=>{
+        // TODO
+    })
 })
 
 describe('number entry', () => {
