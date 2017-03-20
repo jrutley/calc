@@ -9,7 +9,6 @@ describe('operator entry', () => {
         app.handleOperator('+');
         expect(app.state.currentValue).toEqual("5");
         expect(app.state.history).toEqual(["5", "+"]);
-        expect(app.state.currentOperator).toEqual("+");
     })
     it('takes the latest operator', () => {
         const app = mount(<App />).instance();
@@ -17,7 +16,7 @@ describe('operator entry', () => {
         app.handleOperator('+');
         app.handleOperator('-');
         expect(app.state.currentValue).toEqual("5");
-        expect(app.state.currentOperator).toEqual("-");
+        expect(app.state.history).toEqual(['5', '-']);
     })
     it('number times number', () => {
         const app = mount(<App />).instance();
@@ -60,7 +59,6 @@ describe('operator entry', () => {
         app.handleEquals();
         app.handleEquals();
         expect(app.state.currentValue).toEqual("15");
-        expect(app.state.currentOperator).toEqual("+"); // needed for repeating =
     })    
     it('equals repeats last operation on single number', () => {
         const app = mount(<App />).instance();
@@ -68,7 +66,6 @@ describe('operator entry', () => {
         app.handleOperator('+');
         app.handleEquals();
         expect(app.state.currentValue).toEqual("10");
-        expect(app.state.currentOperator).toEqual("+");
     })
 });
 
@@ -115,11 +112,14 @@ describe('number entry', () => {
         app.handleNumber('1');
         expect(app.state.history[0]).toEqual("0.1");
     })
-    it.skip('clear number on screen and history after an equals', ()=>{
+    it.skip('after an equals followed by a number, clear the history', ()=>{
         const app = mount(<App />).instance();
         app.handleNumber('5');
         app.handleNumber('+');
+        app.handleNumber('5');
         app.handleEquals();
-        expect(app.state.history[0]).toEqual("0.1");
+        app.handleNumber('6');
+        expect(app.state.history[0]).toEqual("6");
+        expect(app.state.currentValue).toEqual("6");
     })
 });

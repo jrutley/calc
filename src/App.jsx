@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import logo from './logo.svg';
 import './App.css';
 
 class Screen extends Component {
@@ -30,11 +29,19 @@ class App extends Component {
         }
     }
 
+    isOperator(candidate){
+        return !this.isDigitOrEquals(candidate);
+    }
     isDigitOrEquals(candidate){
         return this.isDigit(candidate) || candidate === '=';
     }
     isDigit(candidate){
         return candidate.match(/[\d.]/);
+    }
+
+    lastElement(history){
+        const lastHistoryElement = history.length - 1;
+        return history[lastHistoryElement];
     }
 
     handleEquals(){
@@ -62,9 +69,6 @@ class App extends Component {
 
         const newValue = parseFloat(state.currentValue + number).toString();
 
-        console.log(`Number ${number} newValue ${newValue}`);
-        console.log(`lastHistoryElement ${lastHistoryElement} state.history[lastHistoryElement] ${state.history[lastHistoryElement]}`);
-
         if(lastHistoryElement === -1 || !this.isDigit(state.history[lastHistoryElement])){
             state.history.push(number)
         } else if(state.currentValue === state.history[lastHistoryElement] || '0' === state.history[lastHistoryElement]){
@@ -72,17 +76,17 @@ class App extends Component {
         }
 
         state.currentValue = newValue.concat(number === '.' && !newValue.match(decimalTest) ? number : "");
-        
-
         this.setState(state);
     }
 
     handleOperator(operator){
         const state = {...this.state};
 
-        state.history.push(operator);
-        state.currentOperator = operator;
-
+        if(this.isOperator(this.lastElement(state.history))){
+            state.history[state.history.length - 1] = operator;
+        } else{
+            state.history.push(operator);
+        }
         this.setState(state);
     }
 
