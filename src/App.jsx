@@ -47,7 +47,7 @@ class App extends Component {
             state.history = state.history.concat(state.history.slice(-3, -1));
         }
         state.history.push('=');
-        state.currentValue = eval(state.history.filter(h=>h !== '=').reduce((acc, cur) => cur.concat(acc),'')).toString();
+        state.currentValue = eval(state.history.filter(h=>h !== '=').reduceRight((acc, cur) => cur.concat(acc),'')).toString();
         this.setState(state);        
     }
 
