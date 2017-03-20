@@ -70,11 +70,38 @@ describe('operator entry', () => {
 });
 
 describe('clear button', () => {
-    it.skip('clears on click', ()=>{
-        // TODO
+    it('clears current number on click', ()=>{
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleClear();
+        expect(app.state.currentValue).toEqual("0");
     })
-    it.skip('c to clear the current number', ()=>{
-        // TODO
+    it('clear once resets current number not history', ()=>{
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+')
+        app.handleNumber('5');
+        app.handleClear();
+        expect(app.state.currentValue).toEqual("0");
+        expect(app.state.history).toEqual(['5','+','0']);
+    })
+    it('clear twice resets current number and history', ()=>{
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+')
+        app.handleNumber('5');
+        app.handleClear();
+        app.handleClear();
+        expect(app.state.currentValue).toEqual("0");
+        expect(app.state.history).toEqual(['0']);
+    })
+    it('clear after operator clears history', ()=>{
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+')
+        app.handleClear();
+        expect(app.state.currentValue).toEqual("0");
+        expect(app.state.history).toEqual(['0']);
     })
 })
 

@@ -1,24 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-
-class Screen extends Component {
-    render() {
-        return (
-            <div id="screen">
-                <div className="screen__main">{this.props.screenValue}</div>
-                <div className="screen__history">{this.props.history.filter(x=>x!=='=')}</div>
-            </div>
-        );
-    }
-}
-
-function Button(props) {
-    return (
-        <button className={props.className?props.className:""} value={props.value} onClick={() => props.handleButtonClick(props.value)}>
-            {props.value}
-        </button>
-    );
-}
+import Screen from './Screen'
+import Button from './Button'
 
 class App extends Component {
     constructor(){
@@ -95,13 +78,28 @@ class App extends Component {
         this.setState(state);
     }
 
+    handleClear(){
+        const state = {...this.state};
+
+        const lastElement = this.lastElement(state.history);
+        if(lastElement === '0' || this.isOperator(lastElement)){
+            state.history = ['0'];
+        }
+        else{
+            state.history[state.history.length - 1] = '0';
+        }
+        state.currentValue = '0';
+
+        this.setState(state);
+    }
+
     render() {
         return ( 
             <div className="App">
                 <div id="container">
                     <Screen screenValue={this.state.currentValue} history={this.state.history} />
                     <div id="buttons">
-                        <Button value="AC" handleButtonClick={(b)=>alert(b)} />
+                        <Button value="C" handleButtonClick={(b)=>this.handleClear()} />
                         <button value="+/-">+/-</button>
                         <button value="%">%</button>
                         <Button value="/" handleButtonClick={(op)=>this.handleOperator(op)} />
