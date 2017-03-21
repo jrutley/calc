@@ -103,8 +103,39 @@ describe('clear button', () => {
         expect(app.state.currentValue).toEqual("0");
         expect(app.state.history).toEqual(['0']);
     })
+    it('calling clear after a calculation should clear the history',()=>{
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator('+')
+        app.handleNumber('6');
+        app.handleEquals();
+        app.handleClear();
+        expect(app.state.history).toEqual(['0']);
+    })
     it.skip('changes display to AC when ready to clear all', ()=>{
-        // TODO
+    })
+})
+
+describe('percent button', ()=>{
+    it('divides the current entry by 100', ()=>{
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handlePercent();
+        expect(app.state.history).toEqual(['5', '%']);
+        expect(app.state.currentValue).toEqual('0.05');
+    })
+    it.skip('divides the completed equation by 100', ()=>{
+        const app = mount(<App />).instance();
+        app.handleNumber('5');
+        app.handleOperator("+");
+        app.handleNumber('6');
+        app.handleEquals();
+        app.handlePercent();
+        expect(app.state.history).toEqual(['(','5', '+', '6', '=', ')', '%']);
+        expect(app.state.currentValue).toEqual('0.11');
+    })
+    it.skip('can separate multiple percent signs', ()=>{
+        '8 + 5%% + 10'
     })
 })
 

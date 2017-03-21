@@ -82,7 +82,7 @@ class App extends Component {
         const state = {...this.state};
 
         const lastElement = this.lastElement(state.history);
-        if(lastElement === '0' || this.isOperator(lastElement)){
+        if(lastElement === '0' || this.isOperator(lastElement) || lastElement === '='){
             state.history = ['0'];
         }
         else{
@@ -93,6 +93,13 @@ class App extends Component {
         this.setState(state);
     }
 
+    handlePercent(){
+        this.setState( (state) => ({
+            history : state.history.concat(['%']),
+            currentValue: (state.currentValue / 100.0).toString()
+        }) )
+    }
+
     render() {
         return ( 
             <div className="App">
@@ -101,7 +108,7 @@ class App extends Component {
                     <div id="buttons">
                         <Button value="C" handleButtonClick={(b)=>this.handleClear()} />
                         <button value="+/-">+/-</button>
-                        <button value="%">%</button>
+                        <Button value="%" handleButtonClick={(b)=>this.handlePercent()} />
                         <Button value="/" handleButtonClick={(op)=>this.handleOperator(op)} />
                         <Button value="7" handleButtonClick={(b)=>this.handleNumber(b)} />
                         <Button value="8" handleButtonClick={(b)=>this.handleNumber(b)} />
